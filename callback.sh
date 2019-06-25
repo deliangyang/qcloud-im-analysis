@@ -8,5 +8,5 @@ TARGET=im
 for i in `seq -w 0 23`; do
     DIR_PATH=`date +%Y/%m/%d`
     FILENAME=`date +%Y%m%d`${i}
-    echo --ftp-password=xxx ftp://${USER}@${IP}/yuechang_log/${DIR_PATH}/${TARGET}-${FILENAME}
+    wget --ftp-password=xtkj2016 ftp://${USER}@${IP}/yuechang_log/${DIR_PATH}/${TARGET}-${FILENAME}
 done

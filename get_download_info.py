@@ -10,10 +10,11 @@ from cache import FileCache
 
 
 class QCloudImDownloader:
-    __slots__ = ('query',)
+    __slots__ = ('query', 'count')
 
     def __init__(self, query):
         self.query = query
+        self.count = 0
 
     def parse_url(self):
         _query = []
@@ -54,13 +55,18 @@ class QCloudImDownloader:
                 cnt += 1
 
     def raw_print(self, content):
-        print('[%s] %s=>%s:' % (
-            time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(content['MsgTimestamp'] + 3600 * 8)),
-            content['From_Account'],
-            content['To_Account'],
-        ))
+
         _content = json.loads(content['MsgBody'][0]['MsgContent']['Data'])
-        pprint.pprint(_content)
+        if _content['action'] == 'ROOM_OTHER_USER_ENTER' and content['To_Account'] == '11264921':
+            print('[%s] %s=>%s:' % (
+                time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(content['MsgTimestamp'] + 3600 * 8)),
+                content['From_Account'],
+                content['To_Account'],
+            ))
+            pprint.pprint(content)
+            self.count += 1
+            pprint.pprint(_content)
+        print('count: %d\n' % self.count)
 
     def __parse(self, data):
         try:
@@ -84,4 +90,4 @@ if __name__ == '__main__':
     }
 
     downloader = QCloudImDownloader(query)
-    downloader.download('2019041210', 'C2C')
+    downloader.download('2019062416', 'C2C')
